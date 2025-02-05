@@ -35,8 +35,8 @@ public class DemoQaTest {
 
         if ("firefox".equalsIgnoreCase(Configuration.browser)) {
             FirefoxOptions firefoxOptions = new FirefoxOptions();
-            firefoxOptions.addArguments("--width=1920");
-            firefoxOptions.addArguments("--height=1080");
+            firefoxOptions.setCapability("webSocketUrl", true);
+            firefoxOptions.setCapability("moz:debuggerAddress", false);
             //firefoxOptions.addPreference("layout.css.devPixelsPerPx", "0.5");
 
             options = firefoxOptions;
