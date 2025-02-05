@@ -2,8 +2,8 @@ networks:
   selenoid: {}
 
 services:
-  ui-tests:
-    container_name: ui-tests
+  ui-tests-chrome:
+    container_name: ui-tests-chrome
     build:
       context: ./
       dockerfile: ./Dockerfile
@@ -11,8 +11,25 @@ services:
     environment:
       StartRemote: "yes"
       SELENOID_URI: "http://selenoid:4444/wd/hub"
+      BROWSER: "chrome"
     ports:
       - "5555:5555"
+    command: mvn clean test
+    networks:
+      - selenoid
+
+  ui-tests-firefox:
+    container_name: ui-tests-firefox
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    working_dir: /app
+    environment:
+      StartRemote: "yes"
+      SELENOID_URI: "http://selenoid:4444/wd/hub"
+      BROWSER: "firefox"
+    ports:
+        - "5556:5556"
     command: mvn clean test
     networks:
       - selenoid

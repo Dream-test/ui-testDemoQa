@@ -3,14 +3,17 @@ package uiTest;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
+
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.*;
@@ -19,22 +22,34 @@ public class DemoQaTest {
     private final Locators locators = new Locators();
     private static WebDriver driver;
 
-    private static void cofigurationRemote() throws URISyntaxException, MalformedURLException {
+    private static void configurationRemote() throws URISyntaxException, MalformedURLException {
         baseUrl = "https://demoqa.com";
         //Configuration.browserSize = "1920x1080";
 
-        if (System.getenv("StartRemote").equals("yes")) {
+        if ("yes".equalsIgnoreCase(System.getenv("StartRemote"))) {
             Configuration.remote = System.getenv("SELENOID_URI");
-            Configuration.browser = "chrome";
+            Configuration.browser = System.getenv("BROWSER");
         }
 
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--no-sandbox");
-        options.addArguments("--ignore-certificate-errors");
-        options.addArguments("--window-size=1366,768");
-        options.addArguments("--force-device-scale-factor=0.5");
+        MutableCapabilities options;
 
-        options.setCapability("browserName", "chrome");
+        if ("firefox".equalsIgnoreCase(Configuration.browser)) {
+            FirefoxOptions firefoxOptions = new FirefoxOptions();
+            firefoxOptions.addArguments("--width=1920");
+            firefoxOptions.addArguments("--height=1080");
+            //firefoxOptions.addPreference("layout.css.devPixelsPerPx", "0.5");
+
+            options = firefoxOptions;
+        } else {
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.addArguments("--no-sandbox");
+            chromeOptions.addArguments("--ignore-certificate-errors");
+            chromeOptions.addArguments("--window-size=1920,1080"); //1366, 768
+            //chromeOptions.addArguments("--force-device-scale-factor=0.5");
+
+            options = chromeOptions;
+        }
+
         options.setCapability("acceptInsecureCerts", true);
         options.setCapability("selenoid:options", Map.of("enableVNC", true));
 
@@ -45,7 +60,7 @@ public class DemoQaTest {
 
     @BeforeAll
     public static void setUp() throws MalformedURLException, URISyntaxException {
-        cofigurationRemote();
+        DemoQaTest.configurationRemote();
        // baseUrl = "https://demoqa.com";
        // Configuration.browserSize = "1366x768";
        // Configuration.headless = false;
