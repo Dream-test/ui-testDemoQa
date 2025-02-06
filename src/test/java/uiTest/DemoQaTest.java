@@ -31,8 +31,8 @@ public class DemoQaTest {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--ignore-certificate-errors");
-        options.addArguments("--window-size=1366,768");
-        options.addArguments("--force-device-scale-factor=0.5");
+        options.addArguments("--window-size=1920,1080");
+        //options.addArguments("--force-device-scale-factor=0.5");
 
         options.setCapability("browserName", "chrome");
         options.setCapability("acceptInsecureCerts", true);
