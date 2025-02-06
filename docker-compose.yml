@@ -12,7 +12,7 @@ services:
       - .video:/opt/selenoid/video
       - ./logs:/opt/selenoid/logs
       - /var/run/docker.sock:/var/run/docker.sock
-    command: ["-conf", "etc/selenoid/browsers.json", "-container-network", "ui-testl76_selenoid", "-limit", "10", "-retry-count", "2"]
+    command: ["-conf", "etc/selenoid/browsers.json", "-container-network", "ui-testdemoqa_selenoid", "-limit", "10", "-retry-count", "2"]
     networks:
       - selenoid
 
