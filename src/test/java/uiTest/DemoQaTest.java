@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.*;
@@ -26,31 +27,30 @@ public class DemoQaTest {
 
     private static void configurationRemote() throws URISyntaxException, MalformedURLException {
         baseUrl = "https://demoqa.com";
-        //Configuration.browserSize = "1920x1080";
 
         if ("yes".equalsIgnoreCase(System.getenv("StartRemote"))) {
             Configuration.remote = System.getenv("SELENOID_URI");
             Configuration.browser = System.getenv("BROWSER");
             logger.info("Get environment SELENOID_URI: {}", Configuration.remote);
             logger.info("Get environment BROWSER: {}", Configuration.browser);
+        } else {
+            Configuration.remote = "http://localhost:4444/wd/hub";
+            Configuration.browser = "firefox";
         }
 
         MutableCapabilities options;
 
         if ("firefox".equalsIgnoreCase(Configuration.browser)) {
             FirefoxOptions firefoxOptions = new FirefoxOptions();
-            firefoxOptions.setCapability("webSocketUrl", true);
-            firefoxOptions.setCapability("moz:debuggerAddress", false);
-            //firefoxOptions.addPreference("layout.css.devPixelsPerPx", "0.5");
 
             options = firefoxOptions;
             logger.info("FirefoxOptions: {}", options);
+            logger.info("set firefox options");
         } else {
             ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.addArguments("--no-sandbox");
             chromeOptions.addArguments("--ignore-certificate-errors");
             chromeOptions.addArguments("--window-size=1920,1080"); //1366, 768
-            //chromeOptions.addArguments("--force-device-scale-factor=0.5");
 
             options = chromeOptions;
             logger.info("ChromeOptions: {}", options);
@@ -69,16 +69,17 @@ public class DemoQaTest {
     @BeforeAll
     public static void setUp() throws MalformedURLException, URISyntaxException {
         DemoQaTest.configurationRemote();
-       // baseUrl = "https://demoqa.com";
-       // Configuration.browserSize = "1366x768";
-       // Configuration.headless = false;
-       // Configuration.timeout = 10000;
     }
 
     @BeforeEach
     public void prepareForTest(TestInfo testInfo) {
         open(baseUrl);
-        executeJavaScript("document.body.style.zoom='50%'");
+        if (Objects.equals(Configuration.browser, "firefox")) {
+            executeJavaScript("document.body.style.transform = 'scale(0.5)';");
+            executeJavaScript("document.body.style.transformOrigin = '0 0';");
+        } else {
+            executeJavaScript("document.body.style.zoom='50%'");
+        }
     }
 
     @AfterEach

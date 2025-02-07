@@ -17,18 +17,18 @@
     }
   },
   "firefox": {
-    "default": "125.0",
+    "default": "124.0",
     "versions": {
-      "125.0_ru": {
+      "124.0_ru": {
         "port": "4444",
-        "image": "selenoid/vnc:firefox_125.0",
+        "image": "selenoid/vnc:firefox_124.0",
         "env": ["LANG=ru_RU.UTF-8", "LANGUAGE=ru_RU.UTF-8", "LC_ALL=ru_RU.UTF-8"],
         "additionalNetworks": ["ui-testdemoqa_selenoid"],
         "path": "/wd/hub"
       },
-      "125.0_en": {
+      "124.0_en": {
         "port": "4444",
-        "image": "selenoid/vnc:firefox_125.0",
+        "image": "selenoid/vnc:firefox_124.0",
         "env": ["LANG=en_US.UTF-8", "LANGUAGE=en_US.UTF-8", "LC_ALL=en_US.UTF-8"],
         "additionalNetworks": ["ui-testdemoqa_selenoid"],
         "path": "/wd/hub"
