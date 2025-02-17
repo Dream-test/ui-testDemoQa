@@ -1,0 +1,18 @@
+networks:
+  selenoid: {}
+
+services:
+  ui-tests:
+    container_name: ui-tests
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    working_dir: /app
+    environment:
+      StartRemote: "yes"
+      SELENOID_URI: "http://selenoid:4444/wd/hub"
+    ports:
+      - "5555:5555"
+    command: mvn clean test
+    networks:
+      - selenoid
