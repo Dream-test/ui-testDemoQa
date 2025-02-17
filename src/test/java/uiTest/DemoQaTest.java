@@ -111,7 +111,7 @@ public class DemoQaTest {
     @AfterAll
     public static void tearDownAll() throws IOException {
         closeWebDriver();
-        PushGateway pg = new PushGateway("127.0.0.1:9091");
+        PushGateway pg = new PushGateway("localhost:9091");
         pg.push(registry, "my_batch_job");
     }
 
