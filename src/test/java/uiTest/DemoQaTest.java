@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -29,6 +31,8 @@ public class DemoQaTest {
     static Counter requests;
     public static Counter failedRequests;
     public static Counter passedRequests;
+
+    private static final Logger logger = LoggerFactory.getLogger(DemoQaTest.class);
 
     private static void cofigurationRemote() throws URISyntaxException, MalformedURLException {
         baseUrl = "https://demoqa.com";
@@ -111,7 +115,12 @@ public class DemoQaTest {
     @AfterAll
     public static void tearDownAll() throws IOException {
         closeWebDriver();
-        PushGateway pg = new PushGateway("localhost:9091");
+
+        String uri = System.getenv("PushGateway_URI");
+
+        logger.info("PushGateway URI: {}", uri);
+
+        PushGateway pg = new PushGateway(uri);
         pg.push(registry, "my_batch_job");
     }
 

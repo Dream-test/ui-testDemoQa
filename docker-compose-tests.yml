@@ -11,6 +11,7 @@ services:
     environment:
       StartRemote: "yes"
       SELENOID_URI: "http://selenoid:4444/wd/hub"
+      PushGateway_URI: "pushgateway:9091"
     ports:
       - "5555:5555"
     command: mvn clean test
