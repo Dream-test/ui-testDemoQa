@@ -119,7 +119,7 @@ public class DemoQaTest {
     public static void tearDownAll() throws IOException {
         closeWebDriver();
 
-        boolean isCI = "true".equalsIgnoreCase(System.getenv("GITHUB_ACTIONS"));
+        boolean isCI = "true".equalsIgnoreCase(System.getenv("IS_CI"));
         logger.info("is CI: {}", isCI);
         if (!isCI) {
             String uri;

@@ -35,6 +35,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    env:
+      IS_CI: true
     needs: build
     services:
       docker:
