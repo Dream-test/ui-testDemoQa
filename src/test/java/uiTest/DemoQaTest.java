@@ -31,14 +31,17 @@ public class DemoQaTest {
     static Counter requests;
     public static Counter failedRequests;
     public static Counter passedRequests;
+    private static String startRemote;
+    private static String selenoidUri;
+
 
     private static final Logger logger = LoggerFactory.getLogger(DemoQaTest.class);
 
     private static void cofigurationRemote() throws URISyntaxException, MalformedURLException {
         baseUrl = "https://demoqa.com";
         //Configuration.browserSize = "1920x1080";
-        String startRemote = System.getenv("StartRemote");
-        String selenoidUri = System.getenv("SELENOID_URI");
+        startRemote = System.getenv("StartRemote");
+        selenoidUri = System.getenv("SELENOID_URI");
 
         if ("yes".equalsIgnoreCase(startRemote) && selenoidUri != null) {
             Configuration.remote = System.getenv("SELENOID_URI");
@@ -116,12 +119,18 @@ public class DemoQaTest {
     public static void tearDownAll() throws IOException {
         closeWebDriver();
 
-        String uri = System.getenv("PushGateway_URI");
+        if (!("true".equalsIgnoreCase(System.getenv("GITHUB_ACTIONS")))) {
+            String uri;
+            if ("yes".equalsIgnoreCase(startRemote) && selenoidUri != null) {
+                uri = System.getenv("PushGateway_URI");
+                logger.info("PushGateway URI: {}", uri);
+            } else {
+                uri = "localhost:9091";
+            }
 
-        logger.info("PushGateway URI: {}", uri);
-
-        PushGateway pg = new PushGateway(uri);
-        pg.push(registry, "my_batch_job");
+            PushGateway pg = new PushGateway(uri);
+            pg.push(registry, "my_batch_job");
+        }
     }
 
 
