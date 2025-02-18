@@ -73,7 +73,8 @@ jobs:
         run: docker compose -f docker-compose.yml up -d
 
       - name: Run UI tests
-        run: docker compose -f docker-compose-tests.yml up --abort-on-container-exit
+        run: docker compose -f docker-compose-tests.yml up --abort-on-container-exit \
+          -e IS_CI=true
 
       - name: Check selenoid logs on failure
         if: failure()
