@@ -119,7 +119,9 @@ public class DemoQaTest {
     public static void tearDownAll() throws IOException {
         closeWebDriver();
 
-        if (!("true".equalsIgnoreCase(System.getenv("GITHUB_ACTIONS")))) {
+        boolean isCI = "true".equalsIgnoreCase(System.getenv("GITHUB_ACTIONS"));
+        logger.info("is CI: {}", isCI);
+        if (!isCI) {
             String uri;
             if ("yes".equalsIgnoreCase(startRemote) && selenoidUri != null) {
                 uri = System.getenv("PushGateway_URI");
