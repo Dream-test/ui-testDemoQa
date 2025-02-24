@@ -40,6 +40,8 @@ jobs:
       docker:
         image: docker:27.5.1
         options: --privileged
+        env:
+          IS_CI: true
 
     steps:
       - name: Checkout code
