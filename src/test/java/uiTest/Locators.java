@@ -20,7 +20,6 @@ public class Locators {
         } else {
             System.out.println("Card with title " + name + " does not exist");
         }
-        //$(Selectors.byTagAndText("h5", name)).click();
     }
 
 
@@ -37,6 +36,5 @@ public class Locators {
         } else {
             System.out.println("Light button with title " + name + " does not exist");
         }
-        //$x("//*[@id=\"item-0\"]/span").shouldHave(Condition.text("Text Box"));
     }
 }

@@ -37,9 +37,8 @@ public class DemoQaTest {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoQaTest.class);
 
-    private static void cofigurationRemote() throws URISyntaxException, MalformedURLException {
+    private static void configurationRemote() throws URISyntaxException, MalformedURLException {
         baseUrl = "https://demoqa.com";
-        //Configuration.browserSize = "1920x1080";
         startRemote = System.getenv("StartRemote");
         selenoidUri = System.getenv("SELENOID_URI");
 
@@ -51,7 +50,6 @@ public class DemoQaTest {
             options.addArguments("--no-sandbox");
             options.addArguments("--ignore-certificate-errors");
             options.addArguments("--window-size=1920,1080");
-            //options.addArguments("--force-device-scale-factor=0.5");
 
             options.setCapability("browserName", "chrome");
             options.setCapability("acceptInsecureCerts", true);
@@ -70,7 +68,7 @@ public class DemoQaTest {
 
     @BeforeAll
     public static void setUp() throws MalformedURLException, URISyntaxException {
-        cofigurationRemote();
+        configurationRemote();
 
         registry = new CollectorRegistry();
         requests = Counter.build()
@@ -85,11 +83,6 @@ public class DemoQaTest {
                 .name("passed_tests")
                 .help("Number of passed tests")
                 .register(registry);
-
-       // baseUrl = "https://demoqa.com";
-       // Configuration.browserSize = "1366x768";
-       // Configuration.headless = false;
-       // Configuration.timeout = 10000;
     }
 
     @BeforeEach
@@ -108,11 +101,6 @@ public class DemoQaTest {
     @AfterEach
     public void testTearDown(TestInfo testInfo) {
         requests.inc();
-        if (testInfo.getTags().contains("failed")) {
-            failedRequests.inc();
-        } else {
-            passedRequests.inc();
-        }
     }
 
     @AfterAll
